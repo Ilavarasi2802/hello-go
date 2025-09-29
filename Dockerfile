@@ -1,12 +1,14 @@
-# Step 1: Use official Golang image to build the app
-FROM golang:1.22 AS builder
+# Step 1: Use official Go image
+FROM golang:1.22-alpine
 
+# Step 2: Set working directory inside container
 WORKDIR /app
+
+# Step 3: Copy source code into container
 COPY . .
-RUN go build -o main .
 
-# Step 2: Use a small Debian image to run the app
-FROM debian:bookworm-slim
-WORKDIR /app
-COPY --from=builder /app/main .
+# Step 4: Build the Go program
+RUN go build -o hello main.go
+
+# Step 5: Run the binary when container starts
 CMD ["./hello"]
